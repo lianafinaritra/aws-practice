@@ -1,0 +1,18 @@
+AWSTemplateFormatVersion: 2010-09-09
+
+Resources:
+  S3Bucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: STD21027
+      AccessControl: PublicRead
+    DeletionPolicy: Retain
+
+  BucketSSM:
+    Type: AWS::SSM::Parameter
+    Properties:
+      Name: !Join ['', [/Parameter/, /s3/bucket-name]]
+      Type: String
+      Value: !GetAtt S3Bucket.Arn
+      Description: Bucket Arn Variable
+      AllowedPattern: "^[a-zA-Z]{1,10}$"
